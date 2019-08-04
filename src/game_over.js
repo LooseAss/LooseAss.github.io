@@ -9,8 +9,15 @@ function game_over() {
     myGamePiece.height = initialPieceSize.h;
     myGamePiece.x = (myGameArea.reference.frame.width - myGamePiece.width) / 2;
     myGamePiece.y = (myGameArea.reference.frame.height - myGamePiece.height) / 2;
-    goDickInitialY = myGamePiece.y - 97 - goDickDist;
-    goDick = new component(64, 97, "dick-1", (myGameArea.reference.frame.width - 64) / 2, goDickInitialY, "image", 0, goDickSpeed, false, 2);
+    let dickName = "dick-" +  getRandomInt(3, 10);
+    let W = document.getElementById(dickName).width,
+        H = document.getElementById(dickName).height;
+    let h = dickHeight, w = W * (dickHeight / H);
+    goDickInitialY = myGamePiece.y - h - goDickDist;
+    let cumX = w/2;
+    if(cumPositions[dickName] !== undefined)
+        cumX = w * (cumPositions[dickName][0] / W);
+    goDick = new component(w, h, dickName, (myGameArea.reference.frame.width)/2 - cumX, goDickInitialY, "image", 0, goDickSpeed, false, 2);
     if(play_sounds)
         gameOverSound();
     goInterval = setInterval(gameOverAnimation, 20);

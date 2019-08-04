@@ -1,7 +1,7 @@
 function checkLevel() {
     if(iter % 100 === 0) {
         dickRate = Math.max(dickRate - 3, minDickRate);
-        cumRate = Math.max(cumRate - 3, minCumRate);
+        cumRate = Math.max(cumRate - 5, minCumRate);
         sig = Math.max(sig - 10, minSig);
     }
     if(iter % 300 === 0) {
@@ -61,13 +61,12 @@ function updateHeader() {
 function addEnemies() {
     if (enemies < maxEnemies && (next_dick == null || iter >= next_dick)) {
         next_dick = iter + getNextTime(dickRate);
-        if (getRandomInt(0, 2) < 1) {
-            let mu = myGamePiece.x + (myGamePiece.width - 64) / 2;
-            items.push(new component(64, 97, "dick-1", getNormalRandomInt(0, myGameArea.reference.frame.width - 64, mu, sig), -97, "image", 0, dickSpeed, false, 2));
-        } else {
-            let mu = myGamePiece.x + (myGamePiece.width - 50) / 2;
-            items.push(new component(50, 97, "dick-2", getNormalRandomInt(0, myGameArea.reference.frame.width - 50, mu, sig), -97, "image", 0, dickSpeed, false, 2));
-        }
+        let r = getRandomInt(3, 10);
+        let W = document.getElementById("dick-" + r).width,
+            H = document.getElementById("dick-" + r).height;
+        let h = dickHeight, w = W * (dickHeight / H);
+        let mu = myGamePiece.x + (myGamePiece.width - w) / 2;
+        items.push(new component(w, h, "dick-" + r, getNormalRandomInt(0, myGameArea.reference.frame.width - w, mu, sig), -h, "image", 0, dickSpeed, false, 2));
         next_cum[items[items.length - 1].id] = iter + getNextTime(cumRate);
     }
 }
@@ -240,7 +239,15 @@ function updateGameArea() {
                 enemies ++;
                 let id = items[i].id;
                 if(next_cum[id] <= iter) {
-                    items.push(new component(10, 15, "white", items[i].x + items[i].width/2, items[i].y + items[i].height, "ellipse", 0, cumSpeed, false, -2));
+                    let cumX = items[i].x + items[i].width/2;
+                    let cumY = items[i].y + items[i].height;
+                    if(cumPositions[items[i].color] !== undefined) {
+                        let W = document.getElementById(items[i].color).width,
+                            H = document.getElementById(items[i].color).height;
+                        cumX = items[i].x + items[i].width * (cumPositions[items[i].color][0] / W);
+                        cumY = items[i].y + items[i].height * (cumPositions[items[i].color][1] / H);
+                    }
+                    items.push(new component(10, 15, "white", cumX, cumY, "ellipse", 0, cumSpeed, false, -2));
                     next_cum[id] = iter + getNextTime(cumRate);
                 }
             }

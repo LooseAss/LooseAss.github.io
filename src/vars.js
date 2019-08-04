@@ -6,12 +6,12 @@ let myGamePiece;
 let hp;
 let score;
 let pieceSpeed = 17, shitSpeed = 12, dickSpeed = 2, cumSpeed = 5,
-    maxDickSpeed = 14, maxCumSpeed = 13;
+    maxDickSpeed = 14, maxCumSpeed = 16;
 let iter = 0;
 let prc = [null, null];
 let next_cum = {};
 let next_dick;
-let frameRate = 20, shitRate = 10, cumRate = 75, dickRate = 75, minCumRate = 30, minDickRate = 30, sig = 350, minSig = 70;
+let frameRate = 20, shitRate = 10, cumRate = 75, dickRate = 75, minCumRate = 20, minDickRate = 30, sig = 350, minSig = 70;
 let maxEnemies = 5, maxMaxEnemies = 10;
 let itemRate = 750, next_item = 2;
 let state;
@@ -33,3 +33,11 @@ let gameItems = {
     "fullHP": 1,
     "mine": 4,
 };
+
+let cumPositions = {
+    "dick-3": [374, 659],
+    "dick-4": [73, 594],
+    "dick-7": [42, 3019],
+    "dick-9": [80, 485]
+};
+let dickHeight = 110;
